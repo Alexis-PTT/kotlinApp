@@ -16,5 +16,5 @@ interface RecordNormalSetDao {
             "WHERE recordNormalSet.id_record_session = " +
             " recordSportSession.id_record_session " +
             "AND recordNormalSet.id_ex = :idEx ")
-    suspend fun getRecordsOfExercices( idEx : Int ) : List<ExerciceRecordData>
+    suspend fun getRecordsOfExercice( idEx : Int ) : List<ExerciceRecordData>
 }
