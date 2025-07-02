@@ -1,0 +1,111 @@
+@startuml test
+entity Person {
+    *user_id : int <<generated>> <<FK>> NN UQ
+    __
+    username : String NN
+    user_age : String 
+    weight : double
+    height : double
+}
+
+entity SportSession{
+  name_session : String <<FK>>
+  __
+  user_id : int <<FK>> NN
+  creationDate : Date NN
+}
+entity Exercice{
+  name_ex : String 
+  __
+  name_session : String <<FK>> NN
+  creationDate : Date NN
+  exerciceType : String NN
+}
+
+entity RecordNormal{
+  name_ex : String <<FK>> NN
+  creationDate : Date <<FK>> NN 
+  __
+  name_session : String <<FK>> NN
+  weigth : double NN
+  repetition : int NN
+  set : int NN
+}
+
+entity RecordSportSession{
+  name_session : String <<FK>> NN
+  creationDate : String NN
+  __
+}
+
+entity RecordDropSet{
+  name_ex : String <<FK>> NN
+  creationDate : Date <<FK>> NN 
+  __
+  name_session : String <<FK>> NN
+  first_weigth : double NN
+  first_repetition : int NN
+  second_weigth : double NN
+  second_repetition : int NN
+  set : int NN
+}
+
+entity RecordPyramidSet{
+  name_ex : String <<FK>> NN
+  creationDate : Date <<FK>> NN 
+  __
+  name_session : String <<FK>> NN
+  first_weigth : double NN
+  first_repetition : int NN
+  last_weigth : double NN
+  last_repetition : int NN
+  set : int NN
+}
+
+
+
+entity SuperSet2{
+  firstExercice : String <<FK>> NN
+  secondExercice : String <<FK>> NN
+  __
+}
+
+entity SuperSet3{
+  firstExercice : String <<FK>> NN
+  secondExercice : String <<FK>> NN
+  thirdExercice : String <<FK>> NN
+  __
+}
+entity SuperSet4{
+  firstExercice : String <<FK>> NN
+  secondExercice : String <<FK>> NN
+  thirdExercice : String <<FK>> NN
+  fourthExercice : String <<FK>> NN
+  __
+}
+
+SportSession "0**  " -- Person : "  0"
+Exercice "0**  " -- SportSession : "  0**"
+RecordNormal "0**  " -- Exercice : "  0**"
+RecordSportSession "0**  " -- SportSession : "  0**"
+RecordPyramidSet "0**  " -- Exercice : "  0**"
+RecordDropSet "0**  " -- Exercice : "  0**"
+SuperSet2 "0*2  " -- Exercice : "  0*1"
+SuperSet3 "0*3  " -- Exercice : "  0*1"
+SuperSet4 "0*4  " -- Exercice : "  0*1"
+
+
+
+
+  
+
+note as N1
+exerciceType can be {superSet2 ,superSet3,
+normal,pyramidHigh,pyramidLow,restPause,
+Negative,Partial,dropSet,controled,
+isometrique,completePyramid}
+
+end note
+
+
+@enduml

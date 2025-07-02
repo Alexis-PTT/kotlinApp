@@ -1,0 +1,116 @@
+DROP TABLE IF EXISTS person;
+DROP TABLE IF EXISTS sportSession;
+DROP TABLE IF EXISTS recordSportSession;
+DROP TABLE IF EXISTS superSet2;
+DROP TABLE IF EXISTS superSet3;
+DROP TABLE IF EXISTS superSet4;
+DROP TABLE IF EXISTS exercice;
+DROP TABLE IF EXISTS recordDropSet;
+DROP TABLE IF EXISTS record_pyramidSet;
+DROP TABLE IF EXISTS recordNormal;
+DROP TABLE IF EXISTS recordNormalSet;
+DROP TABLE IF EXISTS linkExerciceToSession;
+
+
+DROP TABLE IF EXISTS sport_session;
+DROP TABLE IF EXISTS record_sport_session;
+DROP TABLE IF EXISTS super_set2;
+DROP TABLE IF EXISTS super_set3;
+DROP TABLE IF EXISTS super_set4;
+DROP TABLE IF EXISTS record_drop_set;
+DROP TABLE IF EXISTS record_pyramid_set;
+DROP TABLE IF EXISTS record_normal;
+
+
+
+CREATE TABLE sportSession (
+                              session_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                              name_session TEXT NOT NULL
+);
+
+CREATE TABLE exercice (
+                          id_ex INTEGER PRIMARY KEY AUTOINCREMENT,
+                          name_ex TEXT NOT NULL UNIQUE,
+                          exercice_type TEXT NOT NULL
+);
+
+CREATE TABLE linkExerciceToSession (
+                          id_ex INTEGER NOT NULL,
+                          id_session TEXT NOT NULL,
+                          PRIMARY KEY (id_ex, id_session),
+                          FOREIGN KEY (id_session) REFERENCES sportSession(session_id),
+                          FOREIGN KEY (id_ex) REFERENCES exercice(id_ex)
+
+);
+
+
+CREATE TABLE recordSportSession (
+                            id_record_session INTEGER PRIMARY KEY AUTOINCREMENT,
+                            session_id INTEGER NOT NULL,
+                            start_session DATETIME NOT NULL,
+                            end_session DATETIME NOT NULL,
+                            FOREIGN KEY (session_id) REFERENCES sportSession(session_id)
+);
+
+CREATE TABLE recordNormalSet (
+                              id_ex INTEGER,
+                              id_record_session INTEGER NOT NULL,
+                              weight REAL NOT NULL,
+                              repetition INTEGER NOT NULL,
+                              set_count INTEGER NOT NULL,
+                              PRIMARY KEY (id_ex,id_record_session),
+                              FOREIGN KEY (id_ex) REFERENCES exercice(id_ex),
+                              FOREIGN KEY (id_record_session) REFERENCES recordSportSession(id_record_session)
+
+);
+
+
+INSERT INTO sportSession VALUES (NULL,'dos');
+INSERT INTO exercice VALUES (NULL ,'rowing','normal');
+INSERT INTO exercice VALUES (NULL ,'traction','normal');
+INSERT INTO exercice VALUES (NULL ,'reverse fly','normal');
+INSERT INTO exercice VALUES (NULL ,'cable row','normal');
+INSERT INTO sportSession VALUES (NULL,'bras');
+INSERT INTO exercice VALUES (NULL ,'preacher curl','normal');
+INSERT INTO exercice VALUES (NULL ,'spider curl','normal');
+INSERT INTO exercice VALUES (NULL ,'hammer curl','normal');
+INSERT INTO exercice VALUES (NULL ,'head crusher','normal');
+INSERT INTO exercice VALUES (NULL ,'overhead triceps','normal');
+INSERT INTO sportSession VALUES (NULL,'jambes');
+INSERT INTO exercice VALUES (NULL ,'leg curl','normal');
+INSERT INTO exercice VALUES (NULL ,'leg press','normal');
+INSERT INTO exercice VALUES (NULL ,'fly leg','normal');
+
+INSERT INTO linkExerciceToSession VALUES (1,1);
+INSERT INTO linkExerciceToSession VALUES (2,1);
+INSERT INTO linkExerciceToSession VALUES (3,1);
+INSERT INTO linkExerciceToSession VALUES (4,1);
+INSERT INTO linkExerciceToSession VALUES (5,2);
+INSERT INTO linkExerciceToSession VALUES (6,2);
+INSERT INTO linkExerciceToSession VALUES (7,2);
+INSERT INTO linkExerciceToSession VALUES (8,2);
+INSERT INTO linkExerciceToSession VALUES (9,2);
+INSERT INTO linkExerciceToSession VALUES (10,3);
+INSERT INTO linkExerciceToSession VALUES (11,3);
+INSERT INTO linkExerciceToSession VALUES (12,3);
+
+
+
+
+INSERT INTO recordSportSession VALUES (NULL , 1,'2025-05-13 10:31:00','2025-05-13 11:31:00');
+INSERT INTO recordNormalSet VALUES (1,1,32,10,3);
+INSERT INTO recordNormalSet VALUES (2,1,0,6,4);
+INSERT INTO recordNormalSet VALUES (3,1,15,10,3);
+INSERT INTO recordNormalSet VALUES (4,1,60,10,4);
+INSERT INTO recordSportSession VALUES (NULL , 2,'2025-05-13 10:31:00','2025-05-13 11:31:00');
+INSERT INTO recordNormalSet VALUES (5,2,32,10,3);
+INSERT INTO recordNormalSet VALUES (6,2,0,6,4);
+INSERT INTO recordNormalSet VALUES (7,2,15,10,3);
+INSERT INTO recordNormalSet VALUES (8,2,60,10,4);
+INSERT INTO recordNormalSet VALUES (9,2,60,10,4);
+INSERT INTO recordSportSession VALUES (NULL , 2,'2025-05-14 10:31:00','2025-05-14 11:31:00');
+INSERT INTO recordNormalSet VALUES (5,3,32,11,3);
+INSERT INTO recordNormalSet VALUES (6,3,0,7,4);
+INSERT INTO recordNormalSet VALUES (7,3,15,11,3);
+INSERT INTO recordNormalSet VALUES (8,3,60,11,4);
+INSERT INTO recordNormalSet VALUES (9,3,60,11,4);
