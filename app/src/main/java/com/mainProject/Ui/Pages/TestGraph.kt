@@ -44,7 +44,7 @@ class TestGraph {
         val modelProducer = remember { CartesianChartModelProducer() }
         runBlocking {
             modelProducer.runTransaction {
-                lineSeries { series(13, 8, 7, 12, 0, 1, 15, 14, 0, 11, 6, 12, 0, 11, 12, 11) }
+                lineSeries { series(13, 8, 7, 12, 0, 1, 15, 14, 0, 11, 6, 12, 0, 11, 12, 11,12) }
             }
         }
         Box(
