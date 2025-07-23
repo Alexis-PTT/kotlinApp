@@ -15,4 +15,17 @@ interface RecordSportSessionDao{
             "FROM recordSportSession " +
             "WHERE session_id = :idSession ")
     suspend fun getRecordsOfSession( idSession : Int ) : List<RecordSportSession>
+
+    @Query("SELECT start_session "+
+        "FROM recordSportSession " +
+        "WHERE session_id = :idSession")
+    suspend fun getDateRecordsOfSession( idSession : Int ) : List<String>
+
+    /*
+    @Query("SELECT start_session " +
+    "FROM recordSportSession " +
+    "WHERE session_id = :idSession")
+    suspend fun getDateRecordsOfExercice( idSession: Int ) : List<String>
+*/
+
 }

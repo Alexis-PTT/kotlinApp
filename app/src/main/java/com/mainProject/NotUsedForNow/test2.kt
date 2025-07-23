@@ -1,32 +1,9 @@
-/*
- * Copyright 2025 by Patryk Goworowski and Patrick Michalik.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.mainProject.NotUsedForNow
 
-package com.patrykandpatrick.vico.sample.compose
-
-import android.util.Log
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -51,19 +28,14 @@ import com.patrykandpatrick.vico.compose.common.vicoTheme
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.core.cartesian.decoration.HorizontalLine
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.common.LegendItem
 import com.patrykandpatrick.vico.core.common.Position
 import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape
-import com.patrykandpatrick.vico.compose.cartesian.axis.*
-import com.patrykandpatrick.vico.core.cartesian.axis.Axis
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
-import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 
 class test2() {
 
@@ -89,7 +61,7 @@ class test2() {
                 background =
                     shapeComponent(
                         fill,
-                        CorneredShape.rounded(bottomLeft = 4.dp, bottomRight = 4.dp)
+                        CorneredShape.Companion.rounded(bottomLeft = 4.dp, bottomRight = 4.dp)
                     ),
             )
         return remember {
@@ -106,7 +78,7 @@ class test2() {
     @Composable
     private fun JetpackComposeAITestScores(
         modelProducer: CartesianChartModelProducer,
-        modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier.Companion,
     ) {
         val lineColors = listOf(Color(0xff916cda), Color(0xffd877d8), Color(0xfff094bb))
         val legendItemLabelComponent = rememberTextComponent(vicoTheme.textColor)
@@ -116,15 +88,15 @@ class test2() {
                 rememberLineCartesianLayer(
                     LineCartesianLayer.LineProvider.series(
                         lineColors.map { color ->
-                            LineCartesianLayer.rememberLine(
+                            LineCartesianLayer.Companion.rememberLine(
                                 fill = LineCartesianLayer.LineFill.single(fill(color)),
                                 areaFill = null,
                                 pointProvider =
                                     LineCartesianLayer.PointProvider.single(
-                                        LineCartesianLayer.point(
+                                        LineCartesianLayer.Companion.point(
                                             rememberShapeComponent(
                                                 fill(color),
-                                                CorneredShape.Pill
+                                                CorneredShape.Companion.Pill
                                             )
                                         )
                                     ),
@@ -132,8 +104,8 @@ class test2() {
                         }
                     )
                 ),
-                startAxis = VerticalAxis.rememberStart(),
-                bottomAxis = HorizontalAxis.rememberBottom(
+                startAxis = VerticalAxis.Companion.rememberStart(),
+                bottomAxis = HorizontalAxis.Companion.rememberBottom(
                     valueFormatter = BottomAxisValueFormatter
                 ),
                 legend =
@@ -142,7 +114,10 @@ class test2() {
                             extraStore[LegendLabelKey].forEachIndexed { index, label ->
                                 add(
                                     LegendItem(
-                                        shapeComponent(fill(lineColors[index]), CorneredShape.Pill),
+                                        shapeComponent(
+                                            fill(lineColors[index]),
+                                            CorneredShape.Companion.Pill
+                                        ),
                                         legendItemLabelComponent,
                                         label,
                                     )
@@ -159,12 +134,12 @@ class test2() {
         )
     }
 
+    @Preview
     @Composable
     fun Preview() {
         val modelProducer = remember { CartesianChartModelProducer() }
         LaunchedEffect(Unit) {
             modelProducer.runTransaction {
-                // Learn more: https://patrykandpatrick.com/eji9zq.
                 columnSeries { series(data.values) }
                 extras { it[LegendLabelKey] = data.keys.toList() }
             }

@@ -1,4 +1,4 @@
-package com.mainProject.Ui.Pages
+package com.mainProject.NotUsedForNow
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,32 +28,32 @@ class WorkoutDataEntry {
     @Composable
     fun dataEntryMain()  {
 
-        var nameSessionPlan by remember { mutableStateOf<String>("")}
-        var listExo by remember { mutableStateOf<List<String>>(listOf(""))}
-        var listReps by remember { mutableStateOf<List<Int>>(listOf(0))}
-        var listSets by remember { mutableStateOf<List<Int>>(listOf(0))}
-        var listWeight by remember { mutableStateOf<List<Float>>(listOf(0.0F))}
+        var nameSessionPlan by remember { mutableStateOf<String>("") }
+        var listExo by remember { mutableStateOf<List<String>>(listOf("")) }
+        var listReps by remember { mutableStateOf<List<Int>>(listOf(0)) }
+        var listSets by remember { mutableStateOf<List<Int>>(listOf(0)) }
+        var listWeight by remember { mutableStateOf<List<Float>>(listOf(0.0F)) }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.Companion.fillMaxSize()
         ) {
-            LazyColumn(modifier = Modifier.padding(8.dp)) {
-                item{
+            LazyColumn(modifier = Modifier.Companion.padding(8.dp)) {
+                item {
                     Box(
-                        modifier = Modifier
+                        modifier = Modifier.Companion
                             .fillMaxSize(), // prend tout l'espace
-                        contentAlignment = Alignment.Center // centre le contenu
+                        contentAlignment = Alignment.Companion.Center // centre le contenu
                     ) {
                         OutlinedTextField(
                             value = nameSessionPlan,
                             singleLine = true,
-                            onValueChange = { newName -> nameSessionPlan=newName},
-                            label = { Text("nom seance",fontSize = 12.sp ) },
-                            modifier = Modifier.padding(5.dp).width(160.dp)
+                            onValueChange = { newName -> nameSessionPlan = newName },
+                            label = { Text("nom seance", fontSize = 12.sp) },
+                            modifier = Modifier.Companion.padding(5.dp).width(160.dp)
                         )
                     }
                 }
-                for (i in 0..listExo.size-1){
+                for (i in 0..listExo.size - 1) {
                     item {
                         Row(horizontalArrangement = Arrangement.SpaceEvenly) {
                             OutlinedTextField(
@@ -64,18 +64,18 @@ class WorkoutDataEntry {
                                     updatedList[i] = newExo
                                     listExo = updatedList
                                 },
-                                label = { Text("nom exercice",fontSize = 12.sp ) },
-                                modifier = Modifier.padding(5.dp).width(160.dp)
+                                label = { Text("nom exercice", fontSize = 12.sp) },
+                                modifier = Modifier.Companion.padding(5.dp).width(160.dp)
                             )
                             OutlinedTextField(
-                                value = if (listWeight.get(i)!=0.0f) "${listWeight.get(i)}" else "",
+                                value = if (listWeight.get(i) != 0.0f) "${listWeight.get(i)}" else "",
                                 onValueChange = { newWeight ->
                                     val updatedList2 = listWeight.toMutableList()
                                     updatedList2[i] = newWeight.toFloatOrNull() ?: 0f
                                     listWeight = updatedList2
                                 },
-                                label = { Text("KG",fontSize = 12.sp ) },
-                                modifier = Modifier.padding(5.dp).width(54.dp)
+                                label = { Text("KG", fontSize = 12.sp) },
+                                modifier = Modifier.Companion.padding(5.dp).width(54.dp)
                             )
                             OutlinedTextField(
                                 value = "${listSets.get(i)}",
@@ -84,8 +84,8 @@ class WorkoutDataEntry {
                                     updatedList[i] = newSet.toIntOrNull() ?: 0
                                     listSets = updatedList
                                 },
-                                label = { Text("Set",fontSize = 12.sp ) },
-                                modifier = Modifier.padding(5.dp).width(54.dp)
+                                label = { Text("Set", fontSize = 12.sp) },
+                                modifier = Modifier.Companion.padding(5.dp).width(54.dp)
                             )
                             OutlinedTextField(
                                 value = "${listReps.get(i)}",
@@ -94,8 +94,8 @@ class WorkoutDataEntry {
                                     updatedList[i] = newRep.toIntOrNull() ?: 0
                                     listReps = updatedList
                                 },
-                                label = { Text("Rep",fontSize = 12.sp ) },
-                                modifier = Modifier.padding(5.dp).width(54.dp)
+                                label = { Text("Rep", fontSize = 12.sp) },
+                                modifier = Modifier.Companion.padding(5.dp).width(54.dp)
                             )
                         }
                     }
@@ -112,7 +112,7 @@ class WorkoutDataEntry {
                             listReps = updatedRep.plus(0)
                             listSets = updatedSet.plus(0)
                             listWeight = updatedWeight.plus(0.0F)
-                        },modifier = Modifier.padding(4.dp)) {
+                        }, modifier = Modifier.Companion.padding(4.dp)) {
                             Text("rien")
                         }
 
@@ -125,7 +125,7 @@ class WorkoutDataEntry {
                             listReps = updatedRep.plus(0)
                             listSets = updatedSet.plus(0)
                             listWeight = updatedWeight.plus(0.0F)
-                        },modifier = Modifier.padding(4.dp)) {
+                        }, modifier = Modifier.Companion.padding(4.dp)) {
                             Text("rien")
                         }
                     }

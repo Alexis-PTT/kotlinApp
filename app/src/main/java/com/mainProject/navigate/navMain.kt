@@ -9,47 +9,53 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mainProject.Db.DataClassGraphic.SessionPlanData
+import com.mainProject.NotUsedForNow.GraphLineXDateYInt
 import com.mainProject.Ui.Pages.Home
-import com.mainProject.Ui.Pages.SessionPlan
-import com.mainProject.Ui.Pages.WorkoutDataEntry
+import com.mainProject.Ui.Pages.SessionInfo
+import com.mainProject.NotUsedForNow.WorkoutDataEntry
+import com.mainProject.NotUsedForNow.test23
 import com.mainProject.ViewModel.ViewModelMain
-import com.patrykandpatrick.vico.sample.compose.test2
+import com.mainProject.Ui.Pages.ExerciseInfo
 
 @Composable
 fun NavMain (navController: NavHostController){
-    val homeComposes = Home()
-    val sessionPlanCompose = SessionPlan()
+    val homePage = Home()
+    val sessionInfoPage = SessionInfo()
+    val exerciseInfoPage = ExerciseInfo()
     val wDataEntry = WorkoutDataEntry()
-    val test22 = test2()
-    val Ses = "sessionInfoPage"
-    val S_ID = "exerciceInfoPage"
+    val test1234 = test23()
+    val test2345 = GraphLineXDateYInt()
+
     val viewModelMain : ViewModelMain = viewModel()
 
 
-    NavHost(navController = navController, startDestination = "test1234") {
+    NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            homeComposes.mainPage(viewModelMain,navController)
+            homePage.mainPage(viewModelMain,navController)
         }
         composable(route = "sessionInfoPage/{id}",
             arguments = listOf(
                 navArgument("id") { type = NavType.StringType }
             )) {
                 backStackEntry ->
-                sessionPlanCompose.listExercice(backStackEntry.arguments?.getString("id")!!,viewModelMain)
+                sessionInfoPage.listExercice(backStackEntry.arguments?.getString("id")!!,viewModelMain,navController)
         }
-        composable(route = "exerciceInfoPage/{id}",
+        composable(route = "exerciseInfoPage/{id}",
             arguments = listOf(
                 navArgument("id") { type = NavType.StringType }
             )) {
                 backStackEntry ->
-            sessionPlanCompose.listExercice(backStackEntry.arguments?.getString("id")!!,viewModelMain)
+            exerciseInfoPage.listExercice(backStackEntry.arguments?.getString("id")!!,viewModelMain)
         }
         composable("workoutDataEntry") {
             wDataEntry.dataEntryMain()
         }
-        composable("test1234") {
-            test22.Preview()
+        composable ("rien"){
+            test1234.JetpackComposeRockMetalRatios()
         }
+        composable ("rien2"){
+            //test2345.ComposeMultiplatformAITestScores()
+        }
+
     }
 }

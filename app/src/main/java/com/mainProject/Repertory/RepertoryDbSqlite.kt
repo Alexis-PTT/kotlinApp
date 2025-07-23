@@ -34,6 +34,8 @@ class RepertoryDbSqlite(context : Context) {
 
     suspend fun getRecordsOfSession(id_session : Int) = daoRecordSession.getRecordsOfSession(id_session)
 
+    suspend fun getDateRecordsOFSession(id_session: Int) = daoRecordSession.getDateRecordsOfSession(id_session)
+
 
 
     //----- setter des tables -----//

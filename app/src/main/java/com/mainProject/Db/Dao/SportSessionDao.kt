@@ -10,5 +10,4 @@ interface SportSessionDao {
     @Query("SELECT * FROM sportSession")
     suspend fun getAllSessions(): List<SportSession>
 
-
 }

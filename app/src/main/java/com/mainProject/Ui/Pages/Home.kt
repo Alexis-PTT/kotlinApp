@@ -67,7 +67,7 @@ class Home {
     @Composable
     fun buttonRecordWorkout(navController : NavController){
         Button(onClick = {
-            navController.navigate("session_id/1")
+            navController.navigate("rien2")
         }) {
             Text(text="+",
                 fontSize = 32.sp)
