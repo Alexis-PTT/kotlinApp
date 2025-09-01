@@ -9,11 +9,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.mainProject.NotUsedForNow.GraphLineXDateYInt
+import com.mainProject.Ui.Graphs.GraphLineXDateYInt
 import com.mainProject.Ui.Pages.Home
 import com.mainProject.Ui.Pages.SessionInfo
 import com.mainProject.NotUsedForNow.WorkoutDataEntry
 import com.mainProject.NotUsedForNow.test23
+import com.mainProject.Ui.Graphs.GraphMultiLineXDateYInt
 import com.mainProject.ViewModel.ViewModelMain
 import com.mainProject.Ui.Pages.ExerciseInfo
 
@@ -24,7 +25,7 @@ fun NavMain (navController: NavHostController){
     val exerciseInfoPage = ExerciseInfo()
     val wDataEntry = WorkoutDataEntry()
     val test1234 = test23()
-    val test2345 = GraphLineXDateYInt()
+    val test2345 = GraphMultiLineXDateYInt()
 
     val viewModelMain : ViewModelMain = viewModel()
 
@@ -54,7 +55,7 @@ fun NavMain (navController: NavHostController){
             test1234.JetpackComposeRockMetalRatios()
         }
         composable ("rien2"){
-            //test2345.ComposeMultiplatformAITestScores()
+            test2345.lineChartMain(viewModelMain,"Mois","7","","moyenne")
         }
 
     }

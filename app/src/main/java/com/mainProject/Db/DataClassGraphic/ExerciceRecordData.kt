@@ -4,4 +4,6 @@ data class ExerciceRecordData(
     val weight: Double,
     val repetition: Int,
     val set_count: Int,
-    val end_session: String)
+    val start_session: String)
+
+

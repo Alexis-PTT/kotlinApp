@@ -1,0 +1,96 @@
+Android Studio Commentary & KDoc Norms
+1. Use KDoc for Public APIs
+
+KDoc should be used to document:
+Public classes (e.g., Activities, ViewModels, Repositories)
+Public functions
+Public properties
+Constructors
+Interfaces
+
+Example:
+
+        /**
+         * Handles login authentication with Firebase.
+         *
+         * @constructor Creates a new instance of LoginViewModel.
+         */
+        class LoginViewModel : ViewModel() {
+
+            /**
+             * Attempts to log in with the given credentials.
+             *
+             * @param email The user's email
+             * @param password The user's password
+             * @return LiveData that indicates login success or failure
+             */
+            fun login(email: String, password: String): LiveData<Boolean> {
+                // Implementation
+            }
+        }
+
+
+2. Avoid Redundant Comments
+
+    Do not state the obvious. Prefer meaningful naming.
+
+
+3. Use Inline Comments Sparingly but Effectively
+
+    Use them only when needed to explain non-obvious logic.
+    Example:
+
+        // Wait for 2 seconds to avoid triggering rate limits
+        delay(2000)
+
+
+
+4. Prefer Well-Named Code Over Comments
+
+    If you need a comment to explain what a function does, consider renaming it.
+
+
+5. Use TODO_ Comments
+
+    Use // TODO_: to indicate work that needs to be done. Android Studio will track these.
+
+    Example:
+        // TODO_: Replace hardcoded URL with BuildConfig
+        val url = "https://api.example.com"
+
+
+
+6. Use FIXME_ Comments
+
+    Use // FIXME_: to mark known bugs or fragile logic.
+
+    Example:
+        // FIXME_: Crashes if user is null — handle null case
+        val name = user.name
+
+
+7. Use KDoc Tags Appropriately
+
+    Common KDoc tags:
+    @param
+    @return
+    @throws
+    @constructor
+    @see
+    Make sure tag descriptions match the actual parameters.
+
+
+8. Tooling Tip
+
+    Typing /** above a function and pressing Enter auto-generates a KDoc template in Android Studio.
+    Use Dokka to generate static HTML documentation from KDoc comments.
+
+
+9. All the comment Tags i will use
+| Tag                | Purpose                                                       |
+| ------------------ | ------------------------------------------------------------- |
+| `TODO_: BUG`       | Marks a broken code                                           |
+| `TODO_: IMPLEMENT` | Marks a part that need to be implemented                      |
+| `TODO_: EXPLAIN`   | Marks a code that need commentary,Kdoc...                     |
+| `TODO_: OPTIMISE`  | Marks a non optimal code,that can be simplified or factorised |
+| `TODO_: MAYBE`     | Marks a possible future implementation                        |

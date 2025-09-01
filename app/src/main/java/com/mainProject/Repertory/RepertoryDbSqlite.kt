@@ -20,7 +20,6 @@ class RepertoryDbSqlite(context : Context) {
     suspend fun getAllSessions() = daoSportSession.getAllSessions()
 
     suspend fun getSessionsIdOfExercice(idEx : Int) = daoLinkExToSes.getSessionsIdOfExercice(idEx)
-
     suspend fun getExercicesFromSession(idSession : Int): List<Exercice> {
         val exId = daoLinkExToSes.getExercicesIdOfSession(idSession)
         var listOfExercice : List<Exercice> = mutableListOf()
@@ -31,6 +30,8 @@ class RepertoryDbSqlite(context : Context) {
     }
 
     suspend fun getRecordsOfExercice(id_ex : Int) = daoRecordExercice.getRecordsOfExercice(id_ex)
+
+    suspend fun getRecordsOfExerciceAfterXdate(id_ex : Int, minDate : String) = daoRecordExercice.getRecordsOfExerciceAfterXDate(id_ex,minDate)
 
     suspend fun getRecordsOfSession(id_session : Int) = daoRecordSession.getRecordsOfSession(id_session)
 

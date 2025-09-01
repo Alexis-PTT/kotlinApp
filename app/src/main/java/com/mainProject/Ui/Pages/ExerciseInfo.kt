@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mainProject.Ui.Graphs.GraphLineXDateYInt
+import com.mainProject.Ui.Graphs.GraphMultiLineXDateYInt
 import com.mainProject.ViewModel.ViewModelMain
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
@@ -44,11 +46,17 @@ class ExerciseInfo {
     fun listExercice( id : String, viewModel : ViewModelMain) {
 
         var dateRecord by remember { mutableStateOf<List<LocalDateTime>>(emptyList()) }
-        var selectedIndex by remember { mutableIntStateOf(0) }
-        val options = listOf("Semaines", "Mois", "Années")
+        var selectedIndexTemp by remember { mutableIntStateOf(0) }
+        var selectedIndexData by remember { mutableIntStateOf(0) }
+        var selectedIndexReductionType by remember { mutableIntStateOf(0) }
+        val optionsTemp = listOf("Jours","Semaines", "Mois")
+        val optionsData = listOf("Poids", "Reps/Sets","Effort relatif")
+        val optionsReductionType = listOf("Moyenne", "Max")
+        val graphOneLine = GraphLineXDateYInt()
+        val graphTwoLines = GraphMultiLineXDateYInt()
 
         LaunchedEffect(Unit) {
-            //dateRecord = viewModel.getDateRecordOfSession(id.toInt())
+
         }
 
         Column(modifier = Modifier.fillMaxSize()) {
@@ -65,55 +73,76 @@ class ExerciseInfo {
                 item {
                     Column(modifier = Modifier.padding(16.dp)) {
                         SingleChoiceSegmentedButtonRow {
-                            options.forEachIndexed { index, label ->
+                            optionsData.forEachIndexed { index, label ->
                                 SegmentedButton(
                                     shape = SegmentedButtonDefaults.itemShape(
                                         index = index,
                                         count = 3
                                     ),
-                                    onClick = { selectedIndex = index },
-                                    selected = index == selectedIndex,
+                                    onClick = { selectedIndexData = index },
+                                    selected = index == selectedIndexData,
                                     label = { Text(label) }
                                 )
                             }
                         }
-                        SimpleGraphMain(options.get(selectedIndex))
                     }
                 }
-            }
-        }
-    }
+                item {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        SingleChoiceSegmentedButtonRow {
+                            optionsReductionType.forEachIndexed { index, label ->
+                                SegmentedButton(
+                                    shape = SegmentedButtonDefaults.itemShape(
+                                        index = index,
+                                        count = 2
+                                    ),
+                                    onClick = { selectedIndexReductionType = index },
+                                    selected = index == selectedIndexReductionType,
+                                    label = { Text(label) }
+                                )
+                            }
+                        }
+                    }
+                }
+                item {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        SingleChoiceSegmentedButtonRow {
+                            optionsTemp.forEachIndexed { index, label ->
+                                SegmentedButton(
+                                    shape = SegmentedButtonDefaults.itemShape(
+                                        index = index,
+                                        count = 3
+                                    ),
+                                    onClick = { selectedIndexTemp = index },
+                                    selected = index == selectedIndexTemp,
+                                    label = { Text(label) }
+                                )
+                            }
+                        }
 
-    @Composable
-    fun JetpackComposeBasicLineChart(
-        modelProducer: CartesianChartModelProducer,
-        modifier: Modifier = Modifier,
-    ) {
-        CartesianChartHost(
-            chart =
-                rememberCartesianChart(
-                    rememberLineCartesianLayer(),
-                    startAxis = VerticalAxis.rememberStart(),
-                    bottomAxis = HorizontalAxis.rememberBottom(),
-                ),
-            modelProducer = modelProducer,
-            modifier = modifier,
-        )
-    }
+                    }
+                }
+                item {
+                    if(selectedIndexData==1){
+                        graphOneLine.lineChartMain(
+                            viewModel,
+                            optionsTemp[selectedIndexTemp],
+                            id = id,
+                            optionsData[selectedIndexData],
+                            optionsReductionType[selectedIndexReductionType]
+                        )
+                    }else{
+                        graphTwoLines.lineChartMain(
+                            viewModel,
+                            optionsTemp[selectedIndexTemp],
+                            id = id,
+                            optionsData[selectedIndexData],
+                            optionsReductionType[selectedIndexReductionType]
+                        )
+                    }
 
-    @Composable
-    fun SimpleGraphMain(state: String) {
-        val modelProducer = remember { CartesianChartModelProducer() }
-        runBlocking {
-            modelProducer.runTransaction {
-                lineSeries { series(7, 5, 7, 1, 0, 1, 2, 5) }
+                }
             }
-        }
-        Column(modifier = Modifier.fillMaxSize()) {
-            Box(modifier = Modifier.fillMaxSize().padding(16.dp),) {
-                JetpackComposeBasicLineChart(modelProducer)
-            }
-            Text(text = "${state}")
         }
     }
 }

@@ -55,11 +55,6 @@ class SessionInfo {
     fun listExercice( id : String, viewModel : ViewModelMain,navController : NavController){
 
         var exercices by remember { mutableStateOf<List<Exercice>>(emptyList()) }
-        var dateRecord by remember { mutableStateOf<Array<IntArray>>(arrayOf(
-            intArrayOf(0,0,0,0,0,0,0),
-            intArrayOf(0,0,0,0,0,0,0),
-            intArrayOf(0,0,0,0,0,0,0))) }
-        var isLoading by remember { mutableStateOf(true) }
         var selectedIndex by remember { mutableIntStateOf(0) }
         val options = listOf("Jours","Semaines", "Mois")
         val graph = GraphPileXIntYInt()
@@ -68,17 +63,6 @@ class SessionInfo {
 
         LaunchedEffect(Unit) {
             exercices = viewModel.getExerciceFromSession(id.toInt())
-            for(y in 0..2){
-                val stat = viewModel.getDateRecordOfSession(id.toInt(),options.get(y))
-                for(i in 1..7){
-                    if(stat.containsKey(i)) {
-                        dateRecord[y][i-1] = stat.get(i)?.toInt()!!
-                    }
-                }
-            }
-            isLoading = false
-
-
         }
 
 
@@ -106,11 +90,7 @@ class SessionInfo {
                                 )
                             }
                         }
-                        if (isLoading) {
-                            CircularProgressIndicator()
-                        } else {
-                            graph.SimpleGraphMain(dateRecord[selectedIndex])
-                        }
+                        graph.SimpleGraphMain(options[selectedIndex],viewModel,id)
                     }
                 }
                 exercices.forEach{ exercice ->
