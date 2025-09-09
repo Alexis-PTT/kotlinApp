@@ -6,15 +6,12 @@ import com.mainProject.Db.DataClassSQL.Exercise
 
 
 @Dao
-interface ExerciseDao{
+interface MuscleDao{
 
-    @Query("SELECT * " +
-            "FROM exercise,exerciseRecord " +
-            "WHERE exercise_id = :idExercise ")
-    suspend fun getAnExercise( idExercise : Int): Exercise
-
-    @Query("SELECT * " +
-            "FROM exercise,exerciseRecord ")
-    suspend fun getExercises(): List<Exercise>
-
+    @Query("SELECT muscle_name " +
+            "FROM muscle,exercise,linkMuscleExercise " +
+            "WHERE exercise_id = :idExercise " +
+            "AND exercise_id = id_exercise " +
+            "AND muscle_id = id_muscle ")
+    suspend fun getMuscleFromExercise( idExercise : Int): List<String>
 }

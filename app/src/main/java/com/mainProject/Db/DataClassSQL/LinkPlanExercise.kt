@@ -3,7 +3,7 @@ package com.mainProject.Db.DataClassSQL
 import androidx.room.Entity
 import androidx.room.ForeignKey
 
-@Entity(tableName = "linkPlanExercice",
+@Entity(tableName = "linkPlanExercise",
     foreignKeys = [ForeignKey(
         entity = SportPlan::class,
         parentColumns = ["plan_id"],
@@ -12,18 +12,18 @@ import androidx.room.ForeignKey
         onUpdate = ForeignKey.Companion.NO_ACTION
     ),
     ForeignKey(
-        entity = Exercice::class,
-        parentColumns = ["exercice_id"],
-        childColumns = ["id_exercice"],
+        entity = Exercise::class,
+        parentColumns = ["exercise_id"],
+        childColumns = ["id_exercise"],
         onDelete = ForeignKey.Companion.NO_ACTION,
         onUpdate = ForeignKey.Companion.NO_ACTION
     )],
-    primaryKeys = ["id_plan","id_exercice"]
+    primaryKeys = ["id_plan","id_exercise"]
 
 )
 
-data class LinkPlanExercice(
+data class LinkPlanExercise(
     val id_plan: Int,
-    val id_exercice: Int
+    val id_exercise: Int
 
 )

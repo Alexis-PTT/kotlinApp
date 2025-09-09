@@ -5,7 +5,7 @@ import androidx.room.Query
 import com.mainProject.Db.DataClassSQL.Exercice
 
 @Dao
-interface LinkPlanExerciceDao {
+interface LinkPlanExerciseDao {
     @Query("SELECT name_exercice,exercice_id " +
             "FROM linkPlanExercice,exercice " +
             "WHERE id_plan = :idPlan " +

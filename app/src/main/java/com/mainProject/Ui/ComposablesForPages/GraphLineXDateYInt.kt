@@ -1,4 +1,4 @@
-package com.mainProject.Ui.Graphs
+package com.mainProject.Ui.ComposablesForPages
 
 import android.annotation.SuppressLint
 import androidx.annotation.OptIn
@@ -28,9 +28,6 @@ import com.patrykandpatrick.vico.multiplatform.common.component.rememberShapeCom
 import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape
 import java.time.LocalDate
 import java.time.Month
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
 
 class GraphLineXDateYInt {
 

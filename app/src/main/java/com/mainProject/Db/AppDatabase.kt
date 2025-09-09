@@ -2,30 +2,42 @@ package com.mainProject.Db
 
 import android.content.Context
 import androidx.room.*
-import com.mainProject.Db.Dao.ExerciceDao
-import com.mainProject.Db.Dao.LinkExerciceToSessionDao
-import com.mainProject.Db.Dao.MultiTableDao
-import com.mainProject.Db.Dao.RecordNormalSetDao
-import com.mainProject.Db.Dao.RecordSportSessionDao
-import com.mainProject.Db.Dao.SportSessionDao
-import com.mainProject.Db.DataClassSQL.Exercice
-import com.mainProject.Db.DataClassSQL.LinkExerciceToSession
-import com.mainProject.Db.DataClassSQL.RecordNormalSet
-import com.mainProject.Db.DataClassSQL.RecordSportSession
-import com.mainProject.Db.DataClassSQL.SportSession
 
-@Database(entities = [ SportSession::class, Exercice::class,
-    RecordSportSession::class, RecordNormalSet::class,
-    LinkExerciceToSession::class], version = 2, exportSchema = false)
+import com.mainProject.Db.Dao.ExerciseDao
+import com.mainProject.Db.Dao.ExerciseRecordDao
+import com.mainProject.Db.Dao.LinkPlanExerciseDao
+import com.mainProject.Db.Dao.MuscleDao
+import com.mainProject.Db.Dao.MuscleGroupDao
+import com.mainProject.Db.Dao.SessionRecordDao
+import com.mainProject.Db.Dao.SportPlanDao
+
+
+import com.mainProject.Db.DataClassSQL.Exercise
+import com.mainProject.Db.DataClassSQL.LinkPlanExercise
+import com.mainProject.Db.DataClassSQL.ExerciseRecord
+import com.mainProject.Db.DataClassSQL.LinkMuscleExercise
+import com.mainProject.Db.DataClassSQL.LinkMuscleGroupMuscle
+import com.mainProject.Db.DataClassSQL.Muscle
+import com.mainProject.Db.DataClassSQL.MuscleGroup
+import com.mainProject.Db.DataClassSQL.SessionRecord
+import com.mainProject.Db.DataClassSQL.SportPlan
+
+@Database(entities = [ Exercise::class,
+    SessionRecord::class, ExerciseRecord::class,
+    LinkPlanExercise::class , LinkMuscleExercise::class ,
+    LinkMuscleGroupMuscle::class , Muscle::class,
+    MuscleGroup::class , SportPlan::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
 
-    abstract fun SportSession(): SportSessionDao
-    abstract fun Exercice(): ExerciceDao
-    abstract fun RecordNormalSet(): RecordNormalSetDao
-    abstract fun RecordSportSession(): RecordSportSessionDao
-    abstract fun LinkExerciceToSession(): LinkExerciceToSessionDao
-    abstract fun complexQueries(): MultiTableDao
+    abstract fun SportSession(): SportPlanDao
+    abstract fun Exercise(): ExerciseDao
+    abstract fun ExerciseRecord(): ExerciseRecordDao
+    abstract fun SessionRecord(): SessionRecordDao
+    abstract fun LinkPlanExercise(): LinkPlanExerciseDao
+    abstract fun Muscle(): MuscleDao
+    abstract fun MuscleGroup(): MuscleGroupDao
+
 
     companion object {
         @Volatile

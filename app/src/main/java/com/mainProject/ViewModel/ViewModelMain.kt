@@ -3,32 +3,18 @@ package com.mainProject.ViewModel
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Build
-import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import com.mainProject.Db.DataClassGraphic.ExerciceRecordData
-import com.mainProject.Db.DataClassSQL.Exercice
-import com.mainProject.Db.DataClassSQL.LinkExerciceToSession
-import com.mainProject.Db.DataClassSQL.SportSession
+import com.mainProject.Db.DataClassGraphic.ExerciseRecordData
 import com.mainProject.Repertory.RepertoryDbSqlite
-import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
-import com.patrykandpatrick.vico.core.common.data.ExtraStore
-import com.patrykandpatrick.vico.multiplatform.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.multiplatform.cartesian.data.columnSeries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import kotlin.collections.get
 import kotlin.collections.mapValues
-import kotlin.collections.set
-import kotlin.math.min
 
 class ViewModelMain(application: Application): AndroidViewModel(application) {
     private val repository = RepertoryDbSqlite(application.applicationContext)
@@ -36,19 +22,17 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
     //----- ROOM DATABASE -----//
 
     //----- getter table -----//
-    suspend fun getAllSessions(): List<SportSession> =
-        withContext(Dispatchers.IO) { repository.getAllSessions() }
 
-    suspend fun getExerciceFromSession(idSession: Int) =
-        withContext(Dispatchers.IO) { repository.getExercicesFromSession(idSession) }
+    /*suspend fun getExerciceFromSession(idSession: Int) =
+        withContext(Dispatchers.IO) { repository.getExercicesFromSession(idSession) }*/
 
 
     @UnstableApi
     @SuppressLint("NewApi")
-    suspend fun getDateRecordOfSession(id_session: Int, temporality: String): List<Float> =
+    suspend fun getDateRecordOfSessions(temporality: String): List<Float> =
         withContext(Dispatchers.IO) {
             var listToReturn = mutableListOf<Float>(0F, 0F, 0F, 0F, 0F, 0F, 0F)
-            val datesRecords = repository.getDateRecordsOFSession(id_session)
+            val datesRecords = repository.getDatesOfSessions()
             val filteredRecords = filterDataSession(datesRecords,temporality)
             filteredRecords.keys.forEach { key ->
                 listToReturn[key.toInt()] = 6-filteredRecords[key]!!
@@ -70,6 +54,7 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
             val exerciceRecords = repository.getRecordsOfExercice(id_exercice)
             val filteredRecords = filterDataExercice(exerciceRecords,temporality)
 
+            Log.d("","${filteredRecords.size}")
             if (dataNeeded == "Effort relatif") {
                 val repRecord : Map<Long,Float> = repGrow(filteredRecords,reductionType)
                 val setRecord : Map<Long,Float> = setGrow(filteredRecords,reductionType)
@@ -85,6 +70,7 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
 
 
 
+
         }
 
 
@@ -93,23 +79,29 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
 
     //TODO EXPLAIN comment this function
     @SuppressLint("NewApi")
-    private fun weightGrow(exerciceRecords : Map<Long, List<ExerciceRecordData>>, reductionType : String) : Map<Long, Float>{
-        val weightRecord = exerciceRecords.mapValues { it.value.mapIndexed { index,value -> value.weight.toFloat() } }
-        return if(reductionType=="Moyenne") averageGrow(weightRecord) else maxGrow(weightRecord)
+    private fun weightGrow(exerciceRecords : Map<Long, List<ExerciseRecordData>>, reductionType : String) : Map<Long, Float>{
+        //if ((exerciceRecords.size)!=0){
+            val weightRecord = exerciceRecords.mapValues { it.value.mapIndexed { index,value -> value.weight.toFloat() } }
+            return if(reductionType=="Moyenne") averageGrow(weightRecord) else maxGrow(weightRecord)
+        //}
+        //val mapToReturn = exerciceRecords.toMutableMap()
+        //val lastWeight =
+
+        //return
     }
 
 
     //TODO EXPLAIN comment this function
     @SuppressLint("NewApi")
-    private fun repGrow(exerciceRecords : Map<Long, List<ExerciceRecordData>>, reductionType : String) : Map<Long, Float>{
-        val repRecord = exerciceRecords.mapValues { it.value.mapIndexed { index,value -> value.repetition.toFloat() } }
+    private fun repGrow(exerciceRecords : Map<Long, List<ExerciseRecordData>>, reductionType : String) : Map<Long, Float>{
+        val repRecord = exerciceRecords.mapValues { it.value.mapIndexed { index,value -> value.rep_count.toFloat() } }
         return if(reductionType=="Moyenne") averageGrow(repRecord) else maxGrow(repRecord)
     }
 
 
     //TODO EXPLAIN comment this function
     @SuppressLint("NewApi")
-    private fun setGrow(exerciceRecords : Map<Long, List<ExerciceRecordData>>, reductionType : String) : Map<Long, Float>{
+    private fun setGrow(exerciceRecords : Map<Long, List<ExerciseRecordData>>, reductionType : String) : Map<Long, Float>{
         val setRecord = exerciceRecords.mapValues { it.value.mapIndexed { index,value -> value.set_count.toFloat() } }
         return if(reductionType=="Moyenne") averageGrow(setRecord) else maxGrow(setRecord)
     }
@@ -132,9 +124,9 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
     //TODO : OPTIMISE could factorise the filter
     //TODO : OPTIMISE could factorise the groupBy
     @SuppressLint("NewApi")
-    private fun filterDataExercice(data: List<ExerciceRecordData>,temporality: String): Map<Long, List<ExerciceRecordData>> {
+    private fun filterDataExercice(data: List<ExerciseRecordData>, temporality: String): Map<Long, List<ExerciseRecordData>> {
         var currentDate = LocalDate.now()
-        var returnData: Map<Long, List<ExerciceRecordData>> = mapOf()
+        var returnData: Map<Long, List<ExerciseRecordData>> = mapOf()
         if (temporality == "Jours") {
             val minDate = currentDate.minusDays(7)
             returnData = data.filter { toDate(it.start_session).isAfter(minDate) }
@@ -168,9 +160,9 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun filterDataExercice2(data: List<ExerciceRecordData>, temporality: String): Map<Long, List<ExerciceRecordData>> {
+    private fun filterDataExercice2(data: List<ExerciseRecordData>, temporality: String): Map<Long, List<ExerciseRecordData>> {
         var currentDate = LocalDate.now()
-        var returnData: Map<Long, List<ExerciceRecordData>> = mapOf()
+        var returnData: Map<Long, List<ExerciseRecordData>> = mapOf()
         if (temporality == "Jours") {
             returnData = data.groupBy { ChronoUnit.DAYS.between(toDate(it.start_session), currentDate) }
         } else if (temporality == "Semaines") {

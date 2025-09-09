@@ -1,15 +1,20 @@
 package com.mainProject.Db.Dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Query
-import com.mainProject.Db.DataClassSQL.Exercice
+import com.mainProject.Db.DataClassSQL.Exercise
 
 
 @Dao
-interface ExerciceDao{
+interface ExerciseDao{
 
-    @Query("SELECT * FROM Exercice WHERE exercice_id = :idExercice")
-    suspend fun getAnExercice( idExercice : Int): Exercice
+    @Query("SELECT * " +
+            "FROM exercise,exerciseRecord " +
+            "WHERE exercise_id = :idExercise ")
+    suspend fun getAnExercise( idExercise : Int): Exercise
+
+    @Query("SELECT * " +
+            "FROM exercise,exerciseRecord ")
+    suspend fun getExercises(): List<Exercise>
 
 }

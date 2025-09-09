@@ -13,16 +13,15 @@ import com.mainProject.navigate.NavMain
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModelMain = ViewModelMain(application)
-        var listSessions : List<SessionPlanData> = listOf()
+        //val viewModelMain = ViewModelMain(application)
         setContent {
-            MyApp(viewModelMain)
+            MyApp()
         }
     }
 }
 
 @Composable
-fun MyApp(viewModelMain: ViewModelMain) {
+fun MyApp() {
     MaterialTheme {
         NavMain(rememberNavController())
     }

@@ -1,4 +1,4 @@
-package com.mainProject.Ui.Graphs
+package com.mainProject.Ui.ComposablesForPages
 
 import android.annotation.SuppressLint
 import androidx.annotation.OptIn
@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
 import com.mainProject.ViewModel.ViewModelMain
-import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.multiplatform.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.multiplatform.cartesian.axis.VerticalAxis

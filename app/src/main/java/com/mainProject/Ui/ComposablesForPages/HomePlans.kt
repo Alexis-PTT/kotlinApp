@@ -1,2 +1,4 @@
-package com.mainProject.Ui.ComposablesForPages 
+package com.mainProject.Ui.ComposablesForPages
 
+class HomePlans {
+}

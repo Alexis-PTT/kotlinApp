@@ -2,11 +2,12 @@ package com.mainProject.Db.Dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.mainProject.Db.DataClassSQL.SportPlan
 
 @Dao
-interface SportSessionDao {
+interface SportPlanDao {
 
-    @Query("SELECT * FROM sportSession")
-    suspend fun getAllSessions(): List<SportSession>
+    @Query("SELECT * FROM sportPlan")
+    suspend fun getAllPlans(): List<SportPlan>
 
 }

@@ -2,42 +2,30 @@ package com.mainProject.Repertory
 
 import android.content.Context
 import com.mainProject.Db.AppDatabase
-import com.mainProject.Db.DataClassSQL.Exercice
+import com.mainProject.Db.DataClassSQL.Exercise
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class RepertoryDbSqlite(context : Context) {
     private val databaseSqlite = AppDatabase.getDatabase(context)
-
-    private val daoSportSession = databaseSqlite.SportSession()
-    private val daoExercice = databaseSqlite.Exercice()
-    private val daoLinkExToSes = databaseSqlite.LinkExerciceToSession()
-    private val daoRecordExercice = databaseSqlite.RecordNormalSet()
-    private val daoRecordSession = databaseSqlite.RecordSportSession()
-    private val daoOtherQueries = databaseSqlite.complexQueries()
+    private val daoExercise = databaseSqlite.Exercise()
+    private val daoRecordExercise = databaseSqlite.ExerciseRecord()
+    private val daoSessionRecord = databaseSqlite.SessionRecord()
+    private val daoLinkPlanExercise = databaseSqlite.LinkPlanExercise()
+    private val daoMuscle = databaseSqlite.Muscle()
+    private val daoMuscleGroup = databaseSqlite.MuscleGroup()
 
     //----- getter des tables -----//
-    suspend fun getAllSessions() = daoSportSession.getAllSessions()
 
-    suspend fun getSessionsIdOfExercice(idEx : Int) = daoLinkExToSes.getSessionsIdOfExercice(idEx)
-    suspend fun getExercicesFromSession(idSession : Int): List<Exercice> {
-        val exId = daoLinkExToSes.getExercicesIdOfSession(idSession)
-        var listOfExercice : List<Exercice> = mutableListOf()
-        exId.forEach { id ->
-            listOfExercice = listOfExercice.plus(daoExercice.getAnExercice(id.id_ex.toInt()))
-        }
-        return listOfExercice
-    }
-
-    suspend fun getRecordsOfExercice(id_ex : Int) = daoRecordExercice.getRecordsOfExercice(id_ex)
-
-    suspend fun getRecordsOfExerciceAfterXdate(id_ex : Int, minDate : String) = daoRecordExercice.getRecordsOfExerciceAfterXDate(id_ex,minDate)
-
-    suspend fun getRecordsOfSession(id_session : Int) = daoRecordSession.getRecordsOfSession(id_session)
-
-    suspend fun getDateRecordsOFSession(id_session: Int) = daoRecordSession.getDateRecordsOfSession(id_session)
-
-
+    suspend fun getExercisesFromPlan(idPlan : Int): List<Exercise> = daoLinkPlanExercise.getExercicesFromPlan(idPlan)
+    suspend fun getDatesOfSessions() : List<String> = daoSessionRecord.getDatesFromSessions()
+    suspend fun getRecordsOfExercise(id_ex : Int) = daoRecordExercise.getRecordsOfExercise(id_ex)
+    suspend fun getRecordsOfExerciseAfterXdate(id_ex : Int, minDate : String) = daoRecordExercise.getRecordsOfExerciseAfterXDate(id_ex,minDate)
+    suspend fun getExercises() = daoExercise.getExercises()
+    suspend fun getAnExercise(exercise_id : Int) = daoExercise.getAnExercise(exercise_id)
+    suspend fun getMusclesGroupsOfExercise(exercise_id : Int) = daoMuscleGroup.getMuscleGroupFromExercise(exercise_id)
+    suspend fun getMusclesOfExercise(exercise_id : Int) = daoMuscle.getMuscleFromExercise(exercise_id)
+    suspend fun getLastRecordOfExercise(exercise_id : Int) = daoRecordExercise.getLastRecordOfExercise(exercise_id)
 
     //----- setter des tables -----//
 }
