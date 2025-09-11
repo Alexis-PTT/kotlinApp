@@ -30,13 +30,14 @@ import com.mainProject.Db.DataClassSQL.SportPlan
 abstract class AppDatabase : RoomDatabase() {
 
 
-    abstract fun SportSession(): SportPlanDao
+
     abstract fun Exercise(): ExerciseDao
     abstract fun ExerciseRecord(): ExerciseRecordDao
     abstract fun SessionRecord(): SessionRecordDao
     abstract fun LinkPlanExercise(): LinkPlanExerciseDao
     abstract fun Muscle(): MuscleDao
     abstract fun MuscleGroup(): MuscleGroupDao
+    abstract fun Plan(): SportPlanDao
 
 
     companion object {

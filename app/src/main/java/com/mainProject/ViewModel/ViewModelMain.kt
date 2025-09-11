@@ -5,6 +5,7 @@ import androidx.annotation.OptIn
 import androidx.lifecycle.AndroidViewModel
 import androidx.media3.common.util.UnstableApi
 import com.mainProject.Db.DataClassGraphic.ExerciseHomeData
+import com.mainProject.Db.DataClassGraphic.PlanHomeData
 import com.mainProject.Repertory.RepertoryDbSqlite
 import com.mainProject.Ui.Pages.ExerciseInfo
 
@@ -14,6 +15,22 @@ class ViewModelMain(application: Application): AndroidViewModel(application) {
     //----- ROOM DATABASE -----//
 
     //----- getter table -----//
+
+    suspend fun getPlansForHome() : List<PlanHomeData> {
+        val allPlans = repository.getPlans()
+        val allPlansInfo: MutableList<PlanHomeData> = mutableListOf()
+        allPlans.forEach { planData ->
+            allPlansInfo.add(
+                PlanHomeData(
+                    muscleGroups = repository.getMusclesGroupsOfPlan(planData.plan_id?:1),
+                    name = planData.name_plan,
+                    exercice_quantity = repository.getQuantityOfExercisePerPlan(planData.plan_id?:1),
+                    plan_id = planData.plan_id?:1
+                )
+            )
+        }
+        return allPlansInfo
+    }
 
     suspend fun getExercisesForHome() : List<ExerciseHomeData>{
         val allExercises = repository.getExercises()

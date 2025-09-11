@@ -9,17 +9,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
@@ -27,6 +37,7 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,6 +55,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -51,6 +64,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mainProject.Ui.ComposablesForPages.HomeExercices
+import com.mainProject.Ui.ComposablesForPages.HomePlans
 import com.mainProject.ViewModel.ViewModelMain
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -59,6 +73,7 @@ import kotlin.collections.forEach
 
 class Home(val viewModel: ViewModelMain, val navController: NavController) {
     val listOfExercises= HomeExercices()
+    val listOfPlans = HomePlans()
     enum class Destination(
         val route: String,
         val label: String,
@@ -69,15 +84,25 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
         RECORD("b", "Nouvel enregistrement", Icons.Default.AddCircle, "Nouvel enregistrement"),
         PLAN("c", "Plans séances", Icons.Default.DateRange, "Plans séances")
     }
-    
+
     @Composable
-    fun Screen(modifier: Modifier) {
+    fun ScreenEx(modifier: Modifier) {
         Box(
             modifier = modifier.fillMaxSize(),
         ) {
             listOfExercises.listOfExercices(viewModel,navController)
         }
     }
+
+    @Composable
+    fun ScreenPlan(modifier: Modifier) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+        ) {
+            listOfPlans.listOfPlans(viewModel,navController)
+        }
+    }
+
 
 
 
@@ -94,14 +119,17 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
             Destination.entries.forEach { destination ->
                 composable(destination.route) {
                     when (destination) {
-                        Destination.EXERCISE -> Screen(modifier)
-                        Destination.RECORD -> Screen(modifier)
-                        Destination.PLAN -> Screen(modifier)
+                        Destination.EXERCISE -> ScreenEx(modifier)
+                        Destination.RECORD -> ScreenEx(modifier)
+                        Destination.PLAN -> ScreenPlan(modifier)
                     }
                 }
             }
         }
     }
+
+    @androidx.annotation.OptIn(UnstableApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun mainPage(modifier: Modifier = Modifier) {
         val navController = rememberNavController()
@@ -111,6 +139,38 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
 
         Scaffold(
             modifier = modifier,
+            topBar = {
+                CenterAlignedTopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        Text(
+                            "mettre dans quel caté je suis",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    },
+                    actions = {
+                        FloatingActionButton(
+                            onClick = { Log.d("","add ex or plan")  },//TODO : IMPLEMENT
+                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        ) {
+                            Icon(Icons.Filled.Add, "Localized description")
+                        }
+                        FloatingActionButton(
+                            onClick = { Log.d("","go to profile")  },//TODO : IMPLEMENT
+                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        ) {
+                            Icon(Icons.Filled.AccountCircle, "Localized description")
+                        }
+                    }
+
+                )
+            },
             bottomBar = {
                 NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
                     Destination.entries.forEachIndexed { index, destination ->

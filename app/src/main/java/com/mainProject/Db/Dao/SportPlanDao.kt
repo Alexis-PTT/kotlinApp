@@ -8,6 +8,11 @@ import com.mainProject.Db.DataClassSQL.SportPlan
 interface SportPlanDao {
 
     @Query("SELECT * FROM sportPlan")
-    suspend fun getAllPlans(): List<SportPlan>
+    suspend fun getPlans(): List<SportPlan>
+    @Query("SELECT COUNT(*) " +
+            "FROM sportPlan,linkPlanExercise " +
+            "WHERE sportPlan.plan_id = :idPlan " +
+            "AND sportPlan.plan_id = linkPlanExercise.id_plan ")
+    suspend fun getQuantityOfExercisePerPlan( idPlan : Int) : Int
 
 }
