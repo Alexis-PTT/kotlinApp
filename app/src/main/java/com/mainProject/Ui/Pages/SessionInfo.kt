@@ -67,7 +67,7 @@ class SessionInfo {
                                 )
                             }
                         }
-                        graph.SimpleGraphMain(options[selectedIndex],viewModel,id)
+                        //graph.SimpleGraphMain(options[selectedIndex],viewModel,id)
                     }
                 }
                 /*

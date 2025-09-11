@@ -37,12 +37,13 @@ import java.time.Month
 class GraphMultiLineXDateYInt {
 
 
-    private val StartAxisItemPlacer = VerticalAxis.ItemPlacer.step({ 1.0 })
+    private val StartAxisItemPlacer = VerticalAxis.ItemPlacer.step()
 
     @SuppressLint("NewApi")
     private var currentDate : LocalDate = LocalDate.now()
 
     private var dataChart  : MutableMap<String, Map<Int, Float>> = mutableMapOf("data1" to mapOf(), "data2" to mapOf())
+
 
     @SuppressLint("NewApi")
     private val bottomAxisFormatterWeek =
@@ -151,8 +152,8 @@ class GraphMultiLineXDateYInt {
     fun lineChartMain(viewModelMain: ViewModelMain,temporality: String,id : String,dataNeeded : String,reductionType: String) {
         val modelProducer = remember { CartesianChartModelProducer() }
         LaunchedEffect(temporality,dataNeeded,reductionType) {
-            dataChart["data1"]= viewModelMain.getRecordForExercice(id.toInt(),temporality,reductionType,"Set")
-            dataChart["data2"]=viewModelMain.getRecordForExercice(id.toInt(),temporality,reductionType,"Rep")
+            dataChart["data1"]= viewModelMain.getRecordForExercise(id.toInt(),temporality,reductionType,"Set")
+            dataChart["data2"]=viewModelMain.getRecordForExercise(id.toInt(),temporality,reductionType,"Rep")
             modelProducer.runTransaction {
                 lineSeries { dataChart.forEach { (_,d)-> series(d.keys, d.values)} }
             }

@@ -26,18 +26,34 @@ import com.patrykandpatrick.vico.multiplatform.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.multiplatform.common.Fill
 import com.patrykandpatrick.vico.multiplatform.common.component.rememberShapeComponent
 import com.patrykandpatrick.vico.multiplatform.common.shape.CorneredShape
+import java.math.RoundingMode
 import java.time.LocalDate
 import java.time.Month
+import kotlin.math.roundToLong
 
 class GraphLineXDateYInt {
 
 
     private val StartAxisItemPlacer = VerticalAxis.ItemPlacer.step({ 1.0 })
+    private var minData : Float = 0F
 
     @SuppressLint("NewApi")
     private var currentDate : LocalDate = LocalDate.now()
 
     private var dataChart : Map<Int, Float> = mapOf()
+
+
+    @SuppressLint("NewApi")
+    private val horizontalAxisFormatterPourcentage =
+        CartesianValueFormatter { context, yValue, _ ->
+            val test = ((yValue.div(minData))*100).toBigDecimal().setScale(0, RoundingMode.UP).toDouble()
+            "${test}%"
+        }
+    @SuppressLint("NewApi")
+    private val horizontalAxisFormatterNormal =
+        CartesianValueFormatter { context, yValue, _ ->
+            yValue.toString()
+        }
     @SuppressLint("NewApi")
     private val bottomAxisFormatterWeek =
         CartesianValueFormatter { context, xValue, _ ->
@@ -78,7 +94,8 @@ class GraphLineXDateYInt {
     @Composable
     private fun lineChart(
         modelProducer: CartesianChartModelProducer,
-        temporality : String
+        temporality : String,
+        dataNeeded : String
     ){
         val lineColors = listOf(Color(0xff916cda))
         CartesianChartHost(
@@ -103,8 +120,11 @@ class GraphLineXDateYInt {
                             }
                         )
                     ),
-                    startAxis = VerticalAxis.Companion.rememberStart(itemPlacer = StartAxisItemPlacer),
-                    bottomAxis = HorizontalAxis.Companion.rememberBottom(
+                    startAxis = VerticalAxis.Companion.rememberStart(
+                        itemPlacer = StartAxisItemPlacer,
+                        valueFormatter = if (dataNeeded == "Progression") horizontalAxisFormatterPourcentage
+                        else horizontalAxisFormatterNormal
+                    ),bottomAxis = HorizontalAxis.Companion.rememberBottom(
                         valueFormatter = if (temporality == "Mois") bottomAxisFormatterMonth else
                             if (temporality == "Semaines") bottomAxisFormatterWeek else bottomAxisFormatterDay,
                         itemPlacer = HorizontalAxis.ItemPlacer.aligned(spacing = { 1 })
@@ -122,13 +142,15 @@ class GraphLineXDateYInt {
     fun lineChartMain( viewModelMain: ViewModelMain,temporality: String,id : String,dataNeeded : String,reductionType: String) {
         val modelProducer = remember { CartesianChartModelProducer() }
         LaunchedEffect(temporality,dataNeeded,reductionType) {
-            dataChart=viewModelMain.getRecordForExercice(id.toInt(),temporality,reductionType,dataNeeded)
+            dataChart=viewModelMain.getRecordForExercise(id.toInt(),temporality,reductionType,dataNeeded)
+            minData= dataChart[dataChart.keys.sorted().get(0)]?: 0F
+
             modelProducer.runTransaction {
                 lineSeries {  series(dataChart.keys, dataChart.values)}
             }
         }
         Box{
-            lineChart(modelProducer,temporality)
+            lineChart(modelProducer,temporality,dataNeeded)
         }
     }
 

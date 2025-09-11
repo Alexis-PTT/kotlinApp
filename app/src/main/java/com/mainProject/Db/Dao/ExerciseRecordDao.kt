@@ -8,13 +8,13 @@ import com.mainProject.Db.DataClassGraphic.ExerciseRecordData
 @Dao
 interface ExerciseRecordDao {
 
-    @Query("SELECT weight,rep_count,set_count,start_session " +
+    @Query("SELECT weight,rep_count,set_count,start_session as dateRecord " +
             "FROM exerciseRecord,sessionRecord " +
             "WHERE exerciseRecord.id_session = sessionRecord.session_id " +
             "AND id_exercise = :id_exercise ")
     suspend fun getRecordsOfExercise( id_exercise : Int ) : List<ExerciseRecordData>
 
-    @Query("SELECT weight,rep_count,set_count,start_session " +
+    @Query("SELECT weight,rep_count,set_count,start_session as dateRecord " +
             "FROM exerciseRecord,sessionRecord " +
             "WHERE exerciseRecord.id_session = sessionRecord.session_id " +
             "AND id_exercise = :id_exercise "+
@@ -22,13 +22,13 @@ interface ExerciseRecordDao {
     suspend fun getRecordsOfExerciseAfterXDate( id_exercise : Int , minDate : String ) : List<ExerciseRecordData>
 
 
-    @Query("SELECT weight,rep_count,set_count,start_session " +
+    @Query("SELECT weight,rep_count,set_count,start_session as dateRecord " +
             "FROM exerciseRecord,sessionRecord " +
             "WHERE exerciseRecord.id_session = sessionRecord.session_id " +
             "AND id_exercise = :id_exercise "+
             "ORDER BY start_session DESC " +
             "LIMIT 1 ")
-    suspend fun getLastRecordOfExercise( id_exercise : Int ) : List<ExerciseRecordData>
+    suspend fun getLastRecordOfExercise( id_exercise : Int ) : ExerciseRecordData
 
     //TODO : MAYBE a could do a new button for the graphs of the sessions
     // where the data could be the poucentage of progression,

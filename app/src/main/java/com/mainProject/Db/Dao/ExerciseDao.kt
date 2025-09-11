@@ -9,12 +9,12 @@ import com.mainProject.Db.DataClassSQL.Exercise
 interface ExerciseDao{
 
     @Query("SELECT * " +
-            "FROM exercise,exerciseRecord " +
+            "FROM exercise " +
             "WHERE exercise_id = :idExercise ")
     suspend fun getAnExercise( idExercise : Int): Exercise
 
     @Query("SELECT * " +
-            "FROM exercise,exerciseRecord ")
+            "FROM exercise")
     suspend fun getExercises(): List<Exercise>
 
 }

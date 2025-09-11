@@ -2,14 +2,14 @@ package com.mainProject.Db.Dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.mainProject.Db.DataClassSQL.Exercice
+import com.mainProject.Db.DataClassSQL.Exercise
 
 @Dao
 interface LinkPlanExerciseDao {
-    @Query("SELECT name_exercice,exercice_id " +
-            "FROM linkPlanExercice,exercice " +
+    @Query("SELECT name_exercise,exercise_id " +
+            "FROM linkPlanExercise,exercise " +
             "WHERE id_plan = :idPlan " +
-            "AND exercice.exercice_id = linkPlanExercice.id_exercice ")
-    suspend fun getExercicesFromPlan( idPlan : Int): List<Exercice>
+            "AND exercise.exercise_id = linkPlanExercise.id_exercise ")
+    suspend fun getExercicesFromPlan( idPlan : Int): List<Exercise>
 
 }

@@ -2,7 +2,6 @@ package com.mainProject.Db.Dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.mainProject.Db.DataClassSQL.Exercice
 import com.mainProject.Db.DataClassSQL.SessionRecord
 
 

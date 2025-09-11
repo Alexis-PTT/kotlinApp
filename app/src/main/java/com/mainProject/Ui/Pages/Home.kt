@@ -4,6 +4,7 @@ import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,75 +50,36 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mainProject.Ui.ComposablesForPages.HomeExercices
 import com.mainProject.ViewModel.ViewModelMain
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.DotProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import kotlin.collections.forEach
 
-class Home {
-
+class Home(val viewModel: ViewModelMain, val navController: NavController) {
+    val listOfExercises= HomeExercices()
     enum class Destination(
         val route: String,
         val label: String,
         val icon: ImageVector,
         val contentDescription: String
     ) {
-        SONGS("", "", Icons.AutoMirrored.Filled.List, "Songs"),
-        ALBUM("", "Nouvel enregistrement", Icons.Default.AddCircle, "Album"),
-        PLAYLISTS("", "Plan séance", Icons.Default.DateRange, "Playlist")
+        EXERCISE("a", "Liste d'exercices", Icons.AutoMirrored.Filled.List, "Liste d'exercices"),
+        RECORD("b", "Nouvel enregistrement", Icons.Default.AddCircle, "Nouvel enregistrement"),
+        PLAN("c", "Plans séances", Icons.Default.DateRange, "Plans séances")
     }
+    
     @Composable
-    fun mainPage(
-        viewModel: ViewModelMain,
-        navController: NavController
-    ){
-        /*
-        //var sessions by remember { mutableStateOf<List<SportSession>>(emptyList()) }
-
-        LaunchedEffect(Unit) {
-            //sessions = viewModel.getAllSessions()
-        }
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(modifier = Modifier.padding(8.dp)){
-
-                /*sessions.forEach{ session ->
-                    item{
-                        sessionPlanBubble(session,navController)
-                    }
-                }*/
-                item {
-                    buttonRecordWorkout(navController)
-                    Button(
-                        onClick = { navController.navigate("workoutDataEntry") }
-                    ){
-                        Text("test")
-                    }
-                }
-
-            }
-        }
-
-         */
-        NavigationBar()
-
-
-    }
-
-
-
-
-
-    @Composable
-    fun PlaylistScreen(modifier: Modifier = Modifier) {
+    fun Screen(modifier: Modifier) {
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = modifier.fillMaxSize(),
         ) {
-            Text("Playlist Screen")
+            listOfExercises.listOfExercices(viewModel,navController)
         }
     }
+
+
 
     @Composable
     fun AppNavHost(
@@ -132,19 +94,20 @@ class Home {
             Destination.entries.forEach { destination ->
                 composable(destination.route) {
                     when (destination) {
-                        Destination.SONGS -> SongsScreen()
-                        Destination.ALBUM -> AlbumScreen()
-                        Destination.PLAYLISTS -> PlaylistScreen()
+                        Destination.EXERCISE -> Screen(modifier)
+                        Destination.RECORD -> Screen(modifier)
+                        Destination.PLAN -> Screen(modifier)
                     }
                 }
             }
         }
     }
     @Composable
-    fun NavigationBar(modifier: Modifier = Modifier) {
+    fun mainPage(modifier: Modifier = Modifier) {
         val navController = rememberNavController()
-        val startDestination = Destination.SONGS
+        val startDestination = Destination.EXERCISE
         var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+
 
         Scaffold(
             modifier = modifier,
@@ -168,26 +131,8 @@ class Home {
                     }
                 }
             }
-        ) { contentPadding ->
+        ){ contentPadding ->
             AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
         }
     }
-
-
-
-    /*"@Composable
-    fun bubble(session : SportSession, navController :  NavController){
-        Card(modifier = Modifier.padding(8.dp),
-            onClick = {
-                navController.navigate("sessionInfoPage/${session.session_id}")
-            })
-        {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = "Seance id : ${session.session_id}")
-                Text(text = "crée depuis : ${session.name_session}")
-            }
-        }
-    }*/
-
-
 }

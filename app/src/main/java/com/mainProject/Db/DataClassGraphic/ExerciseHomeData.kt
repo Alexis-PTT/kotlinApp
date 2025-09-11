@@ -1,6 +1,6 @@
 package com.mainProject.Db.DataClassGraphic
 
-data class ExerciceInfo(
+data class ExerciseHomeData(
     val muscle: List<String>,
     val muscleGroup: List<String>,
     val name: String,
