@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mainProject.Ui.Pages.Home
 import com.mainProject.Ui.Pages.SessionInfo
-import com.mainProject.NotUsedForNow.WorkoutDataEntry
+import com.mainProject.Ui.Pages.WorkoutDataEntry
 import com.mainProject.NotUsedForNow.test23
 import com.mainProject.Ui.ComposablesForPages.GraphMultiLineXDateYInt
 import com.mainProject.ViewModel.ViewModelMain

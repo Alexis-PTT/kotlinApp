@@ -1,13 +1,18 @@
 package com.mainProject.Ui.Pages
 
+import android.R.attr.onClick
 import android.graphics.drawable.Icon
+import android.text.Layout
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
@@ -29,6 +34,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
@@ -36,6 +42,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
+import androidx.compose.material3.TabIndicatorScope
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -64,6 +72,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mainProject.Ui.ComposablesForPages.HomeExercices
+import com.mainProject.Ui.ComposablesForPages.HomePage
 import com.mainProject.Ui.ComposablesForPages.HomePlans
 import com.mainProject.ViewModel.ViewModelMain
 import ir.ehsannarmani.compose_charts.LineChart
@@ -74,6 +83,8 @@ import kotlin.collections.forEach
 class Home(val viewModel: ViewModelMain, val navController: NavController) {
     val listOfExercises= HomeExercices()
     val listOfPlans = HomePlans()
+    val listOfStats = HomePage()
+    val colorText = Color(30, 52, 23, 255)
     enum class Destination(
         val route: String,
         val label: String,
@@ -81,7 +92,7 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
         val contentDescription: String
     ) {
         EXERCISE("a", "Liste d'exercices", Icons.AutoMirrored.Filled.List, "Liste d'exercices"),
-        RECORD("b", "Nouvel enregistrement", Icons.Default.AddCircle, "Nouvel enregistrement"),
+        HOME("b", "acceuil", Icons.Default.Home, "Acceuil"),
         PLAN("c", "Plans séances", Icons.Default.DateRange, "Plans séances")
     }
 
@@ -102,6 +113,14 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
             listOfPlans.listOfPlans(viewModel,navController)
         }
     }
+    @Composable
+    fun ScreenHome(modifier: Modifier) {
+        Box(
+            modifier = modifier.fillMaxSize(),
+        ) {
+            listOfStats.homeGraphs(viewModel)
+        }
+    }
 
 
 
@@ -120,7 +139,7 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
                 composable(destination.route) {
                     when (destination) {
                         Destination.EXERCISE -> ScreenEx(modifier)
-                        Destination.RECORD -> ScreenEx(modifier)
+                        Destination.HOME -> ScreenHome(modifier)
                         Destination.PLAN -> ScreenPlan(modifier)
                     }
                 }
@@ -139,60 +158,61 @@ class Home(val viewModel: ViewModelMain, val navController: NavController) {
 
         Scaffold(
             modifier = modifier,
-            topBar = {
-                CenterAlignedTopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    title = {
-                        Text(
-                            "mettre dans quel caté je suis",
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    actions = {
-                        FloatingActionButton(
-                            onClick = { Log.d("","add ex or plan")  },//TODO : IMPLEMENT
-                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                        ) {
-                            Icon(Icons.Filled.Add, "Localized description")
-                        }
-                        FloatingActionButton(
-                            onClick = { Log.d("","go to profile")  },//TODO : IMPLEMENT
-                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                        ) {
-                            Icon(Icons.Filled.AccountCircle, "Localized description")
-                        }
-                    }
-
-                )
-            },
-            bottomBar = {
-                NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+            topBar= {PrimaryTabRow(
+                selectedTabIndex = selectedDestination,
+                modifier = Modifier.padding(top = 15.dp),
+                indicator = { TabRowDefaults.Indicator(
+                        Modifier.tabIndicatorOffset(selectedDestination),
+                        color = colorText // Mets ici la couleur que tu souhaites
+                    )
+                }
+            ) {
                     Destination.entries.forEachIndexed { index, destination ->
-                        NavigationBarItem(
+                        Tab(
+                            selectedContentColor = colorText,
+                            unselectedContentColor = colorText,
                             selected = selectedDestination == index,
                             onClick = {
                                 navController.navigate(route = destination.route)
                                 selectedDestination = index
                             },
+                            text = {
+                                Text(
+                                    color = colorText,
+                                    text = destination.label,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            },
                             icon = {
                                 Icon(
                                     destination.icon,
-                                    contentDescription = destination.contentDescription
+                                    contentDescription = destination.contentDescription,
+                                    tint = colorText
                                 )
-                            },
-                            label = { Text(destination.label) }
+                            }
                         )
                     }
                 }
             }
         ){ contentPadding ->
             AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize() // Take the whole screen
+                .padding(16.dp) // Optional padding from edges
+        ) {
+            LargeFloatingActionButton(
+                onClick = { },//TODO : implement
+                shape = CircleShape,
+                modifier = Modifier.size(75.dp).align( Alignment.BottomEnd ),
+                containerColor = colorText
+            ) {
+                Icon(Icons.Filled.Add, "Large floating action button",
+                    modifier = Modifier.size(50.dp),
+                    tint = Color.White)
+            }
         }
     }
 }

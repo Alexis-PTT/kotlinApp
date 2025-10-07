@@ -1,4 +1,4 @@
-package com.mainProject.NotUsedForNow
+package com.mainProject.Ui.Pages
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

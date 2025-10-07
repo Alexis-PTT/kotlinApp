@@ -113,14 +113,14 @@ class GraphPileXIntYInt {
         )
     }
 
-    /*
+
     @SuppressLint("NewApi")
     @Composable
 
-    fun SimpleGraphMain(temporality: String,viewModelMain: ViewModelMain,id : String){
+    fun SimpleGraphMain(temporality: String,viewModelMain: ViewModelMain){
         val modelProducer = remember { CartesianChartModelProducer() }
         LaunchedEffect(temporality) {
-            val stat = viewModelMain.getDateRecordOfSessions(temporality)
+            val stat = viewModelMain.getRecordsForGraph(temporality)
 
             modelProducer.runTransaction {
                 columnSeries { series(stat) }
@@ -132,5 +132,5 @@ class GraphPileXIntYInt {
         ) {
             JetpackComposeBasicLineChart(modelProducer,temporality)
         }
-    }*/
+    }
 }

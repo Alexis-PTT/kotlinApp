@@ -20,7 +20,7 @@ class ViewModelGraphs(repertory : RepertoryDbSqlite) {
 
     @UnstableApi
     @SuppressLint("NewApi")
-    suspend fun getDateRecordOfSessions(temporality: String): List<Float> =
+    suspend fun getDateRecords(temporality: String): List<Float> =
         withContext(Dispatchers.IO) {
             var listToReturn = mutableListOf<Float>(0F, 0F, 0F, 0F, 0F, 0F, 0F)
             val datesRecords = repository.getDatesOfSessions()

@@ -3,10 +3,12 @@ package com.mainProject.Ui.ComposablesForPages
 import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +34,7 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,8 +50,9 @@ import com.mainProject.Db.DataClassGraphic.ExerciseRecordData
 import com.mainProject.ViewModel.ViewModelMain
 import org.intellij.lang.annotations.JdkConstants
 
-class HomeExercices {
+class HomeExercices{
 
+    val colorText = Color(30, 52, 23, 255)
     @Composable
     fun listOfExercices(
         viewModel: ViewModelMain,
@@ -81,45 +86,57 @@ class HomeExercices {
                 modifier = Modifier.padding(8.dp),
                 onClick = {
                     navController.navigate("exerciseInfoPage/${exercise.exercise_id}")
-                })
-            {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(  modifier = Modifier
-                        .width(290.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,){
+                }
+            ){Box(Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .background(Color(89, 103, 52, 255))// Hauteur du header
+                    ){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
                         Text(
                             exercise.name,
-                            modifier = Modifier.padding(5.dp),
+                            modifier = Modifier.padding(15.dp),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Left
+                            textAlign = TextAlign.Left,
+                            color = Color.White
                         )
                         Icon(
                             Icons.Default.Clear,
                             contentDescription = "delete the exercice",
-                            modifier = Modifier.padding(5.dp)
+                            modifier = Modifier.padding(15.dp),
+                            tint = Color.White
                         )
-
-
                     }
+                }
+                Column(modifier = Modifier.padding(16.dp)) {
+                    HorizontalDivider(thickness = 2.dp)
                     Text(
                         "groupes musculaires touchée :",
                         fontWeight = FontWeight.Bold,
-                        textDecoration = TextDecoration.Underline
+                        modifier = Modifier.padding(5.dp),
+                        color = colorText
                     )
-                    Text("  " + exercise.muscleGroup.joinToString(", "))
+                    Text("  " + exercise.muscleGroup.joinToString(", "),
+                        color = colorText
+                    )
                     Text(
                         "niveau actuel :",
                         fontWeight = FontWeight.Bold,
-                        textDecoration = TextDecoration.Underline
+                        modifier = Modifier.padding(5.dp),
+                        color = colorText
                     )
-                    Text("  set/reps : ${exercise.set_count}X${exercise.rep_count}")
-                    Text("  poids : ${exercise.weight} KG")
+                    Text("  set/reps : ${exercise.set_count}X${exercise.rep_count}",
+                        color = colorText
+                    )
+                    Text("  poids : ${exercise.weight} KG",
+                        color = colorText
+                    )
                 }
-
         }
-
-
-
     }
 }

@@ -3,6 +3,8 @@ package com.mainProject.Repertory
 import android.content.Context
 import com.mainProject.Db.AppDatabase
 import com.mainProject.Db.DataClassSQL.Exercise
+import com.mainProject.Db.DataClassSQL.LinkPlanExercise
+import com.mainProject.Db.DataClassSQL.SportPlan
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -30,4 +32,7 @@ class RepertoryDbSqlite(context : Context) {
     suspend fun getMusclesGroupsOfPlan(plan_id : Int) = daoMuscleGroup.getMusclesGroupsFromPlan(plan_id)
 
     //----- setter des tables -----//
+
+    suspend fun addSportPlan(sportPlan : SportPlan) = daoPlan.insertSportPlan(sportPlan)
+    suspend fun addLinkPlanExercise(linkPlanExercise: LinkPlanExercise) = daoLinkPlanExercise.insertLinkPlanExercise(linkPlanExercise)
 }

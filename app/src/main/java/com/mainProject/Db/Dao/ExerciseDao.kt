@@ -1,6 +1,7 @@
 package com.mainProject.Db.Dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.mainProject.Db.DataClassSQL.Exercise
 
@@ -17,4 +18,6 @@ interface ExerciseDao{
             "FROM exercise")
     suspend fun getExercises(): List<Exercise>
 
+    @Insert
+    suspend fun insertExercise(exercise: Exercise)
 }

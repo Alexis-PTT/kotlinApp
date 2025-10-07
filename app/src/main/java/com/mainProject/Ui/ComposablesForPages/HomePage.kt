@@ -1,4 +1,4 @@
-package com.mainProject.Ui.Pages
+package com.mainProject.Ui.ComposablesForPages
 
 import android.annotation.SuppressLint
 import androidx.annotation.OptIn
@@ -20,36 +20,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
 import androidx.navigation.NavController
-import com.mainProject.Ui.ComposablesForPages.GraphPileXIntYInt
 import com.mainProject.ViewModel.ViewModelMain
 
-class SessionInfo {
+class HomePage {
 
 
     @OptIn(UnstableApi::class)
     @SuppressLint("NewApi")
     @Composable
-    fun listExercice( id : String, viewModel : ViewModelMain,navController : NavController){
+    fun homeGraphs( viewModel : ViewModelMain,){
 
-        //var exercices by remember { mutableStateOf<List<Exercice>>(emptyList()) }
         var selectedIndex by remember { mutableIntStateOf(0) }
         val options = listOf("Jours","Semaines", "Mois")
         val graph = GraphPileXIntYInt()
 
-
-
-        LaunchedEffect(Unit) {
-            //exercices = viewModel.getExerciceFromSession(id.toInt())
-        }
-
+        LaunchedEffect(Unit) {}
 
         Column(modifier = Modifier.fillMaxSize()) {
             LazyColumn(modifier = Modifier.padding(8.dp)){
 
                 item{
-                    Text(text = "id :${id}")
+                    Text(text = "Statistiques")
                 }
-
                 item{
                     Column(modifier = Modifier.padding(16.dp)){
                         SingleChoiceSegmentedButtonRow {
@@ -67,7 +59,7 @@ class SessionInfo {
                                 )
                             }
                         }
-                        //graph.SimpleGraphMain(options[selectedIndex],viewModel,id)
+                        graph.SimpleGraphMain(options[selectedIndex],viewModel)
                     }
                 }
             }
